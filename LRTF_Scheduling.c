@@ -122,7 +122,7 @@ int main()
 	{ 
         printf("\t\t%d",Prr_Arr[var_i].ProcessNo); 
         printf("\t%d", Prr_Arr[var_i].ProcessID);
-        printf("\t\t",Prr_Arr[var_i].InitAT); 
+        printf("\t\t%d",Prr_Arr[var_i].InitAT); 
         printf("\t\t%d\t\t",Prr_Arr[var_i].InitBT); 
         
         printf("%d\t\t",Prr_Arr[var_i].CompletionTime);
