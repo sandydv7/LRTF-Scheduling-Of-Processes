@@ -4,11 +4,6 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-// Global Variables
-
-int TOTAL_TIME = 0; 
-int PRE_TOTAL = 0;
-
 struct Process { 
     int ProcessNo; 
     int ProcessID;
@@ -21,11 +16,10 @@ struct Process {
     int CompletionTime; 
 };
 
-
 // Used functions in this Program
 int Max_Burst(struct Process[], int x, int y);
 
-int ExcutionOFProcesses(struct Process[] ,int);
+int ExcutionOFProcesses(struct Process[] ,int k);
 
 
 // sort Processes As per Their Process's ID 
@@ -35,6 +29,9 @@ int comparator(const void *p, const void *q)
     int r = ((struct Process *)q)->ProcessID;  
     return (l - r); 
 }
+int inTotal = 0; 
+int fiTotal = 0;
+
 int main() 
 { 
 	
@@ -46,16 +43,11 @@ int main()
 	scanf("%d",&number_of_processes); 
 	
 	struct Process Prr_Arr[number_of_processes];
-	
-	for (var_i = 0; var_i < number_of_processes; var_i++) 
-	{ 
-    	
-    	Prr_Arr[var_i].ProcessNo=var_i+1; 
-    	
-    }
- 
+	 
     for (var_i = 0; var_i < number_of_processes; var_i++) 
 	{ 
+    	
+    	Prr_Arr[var_i].ProcessNo=var_i+1;
     	
     	printf("\n\n\tEnter the %dth Process ID::",var_i+1);
     	scanf("%d",&Prr_Arr[var_i].ProcessID); 
@@ -66,7 +58,7 @@ int main()
         printf("\tEnter the %dth Proccess Burst Time::",var_i+1);
         scanf("%d",&Prr_Arr[var_i].BurstTime);
         Prr_Arr[var_i].InitBT = Prr_Arr[var_i].BurstTime; 
-        PRE_TOTAL += Prr_Arr[var_i].BurstTime;
+        fiTotal += Prr_Arr[var_i].BurstTime;
         
         //cout<<endl<<endl;
         
@@ -91,12 +83,6 @@ int main()
    	int size;
    	size=sizeof(Prr_Arr)/sizeof(Prr_Arr[0]);
     qsort((void*)Prr_Arr, size, sizeof(Prr_Arr[0]), comparator); 
-  
-    
-    TOTAL_TIME += Prr_Arr[0].ArrivalTime; 
-  
-   
-    PRE_TOTAL += Prr_Arr[0].ArrivalTime; 
     ExcutionOFProcesses(Prr_Arr,number_of_processes); 
     int totalWT = 0; 
     int totalTAT = 0; 
@@ -157,7 +143,7 @@ int Max_Burst(struct Process P[],int at,int number_p)
             }
     } 
     
-    return max; 
+    return max;
 }
 
 //process running status
@@ -170,12 +156,12 @@ int ExcutionOFProcesses(struct Process P[],int number_p)
     int k;
     int j;
     int i = P[0].ArrivalTime; 
-    while (TOTAL_TIME != PRE_TOTAL) { 
+    while (inTotal != fiTotal) { 
         index = Max_Burst(P,i,number_p); 
-        printf("\n\n\tProcess executing at time %d is : P%d\t",TOTAL_TIME,P[index].ProcessNo);
+        printf("\n\n\tProcess executing at time %d is : P%d\t",inTotal,P[index].ProcessNo);
   
         --P[index].BurstTime; 
-        ++TOTAL_TIME ;
+        ++inTotal ;
         
         
         for (j=0;j<number_p;j++)
@@ -197,14 +183,12 @@ int ExcutionOFProcesses(struct Process P[],int number_p)
     	printf("\n"); 
         i++; 
         if (P[index].BurstTime == 0) { 
-            P[index].CompletionTime = TOTAL_TIME; 
-            printf("\t\tProcess P%d has been completed at %d",P[index].ProcessNo ,TOTAL_TIME); 
+            P[index].CompletionTime = inTotal; 
+            printf("\t\tProcess P%d has been completed at %d",P[index].ProcessNo ,inTotal); 
         } 
         printf("\n"); 
   
-        if (TOTAL_TIME == PRE_TOTAL) 
+        if (inTotal == fiTotal) 
             break;
     } 
 } 
-
-   
